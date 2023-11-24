@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whateatgo2/riverpod/homeScreenState.dart';
 import 'package:whateatgo2/riverpod/shakeState.dart';
+import 'package:whateatgo2/screen/history_screen.dart';
 import 'package:whateatgo2/screen/list_screen.dart';
 import 'package:whateatgo2/screen/manual_screen.dart';
 
@@ -74,8 +75,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ),
                 ),
                 onTap: () {
-                  // Update the state of the app.
-                  // ...
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => HistoryScreen(),
+                    ),
+                  );
                 },
               ),
               const ListTile(

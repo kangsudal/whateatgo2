@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:whateatgo2/model/eat_note.dart';
 import 'package:whateatgo2/riverpod/shakeState.dart';
 import 'package:whateatgo2/screen/home_screen.dart';
 
@@ -12,6 +13,8 @@ import 'model/recipe.dart';
 void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(RecipeAdapter());
+  Hive.registerAdapter(EatNoteAdapter());
+  await Hive.openBox<EatNote>('eatNoteBox');
   Box<Recipe> recipeBox = await Hive.openBox<Recipe>('recipeBox');
   if (recipeBox.isEmpty) {
     await fetchData(); // JSON -> recipeBox 저장

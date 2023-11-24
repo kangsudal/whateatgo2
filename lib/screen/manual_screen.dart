@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:whateatgo2/model/eat_note.dart';
 import 'package:whateatgo2/riverpod/shakeState.dart';
 
 import '../model/recipe.dart';
@@ -353,7 +355,10 @@ class _ManualScreenState extends ConsumerState<ManualScreen> {
                 ElevatedButton(
                   child: const Text("오늘은 이 메뉴로 확정!"),
                   onPressed: () {
-                    Navigator.pop(context);
+                    final Box box = Hive.box<EatNote>('eatNoteBox');
+                    box.add(EatNote(
+                        recipe: widget.recipe, eatDateTime: DateTime.now()));
+                    Navigator.of(context).pop();
                   },
                 ),
                 const SizedBox(height: 20),
