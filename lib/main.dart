@@ -14,7 +14,7 @@ void main() async {
   Hive.registerAdapter(RecipeAdapter());
   Box<Recipe> recipeBox = await Hive.openBox<Recipe>('recipeBox');
   if (recipeBox.isEmpty) {
-    fetchData(); // JSON -> recipeBox 저장
+    await fetchData(); // JSON -> recipeBox 저장
   }
 
   runApp(
@@ -89,7 +89,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   }
 }
 
-void fetchData() async {
+Future<void> fetchData() async {
   //로컬 파일로부터 모든 레시피를 불러와 DB에 넣는다.
   try {
     //파일을 읽어와 List<Recipe>로 변환시킨다.
