@@ -1,6 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:whateatgo2/model/bookmark.dart';
 import 'package:whateatgo2/riverpod/shakeState.dart';
+import 'package:whateatgo2/screen/manual_screen.dart';
 
 class BookMarkScreen extends ConsumerStatefulWidget {
   const BookMarkScreen({super.key});
@@ -30,6 +34,53 @@ class _BookMarkScreenState extends ConsumerState<BookMarkScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('관심 항목'),
+      ),
+      body: ValueListenableBuilder(
+        valueListenable: Hive.box<Bookmark>('bookmarkBox').listenable(),
+        builder: (BuildContext context, Box<Bookmark> box, Widget? child) {
+          if (box.isNotEmpty) {
+            return ListView.separated(
+              itemBuilder: (BuildContext context, int index) {
+                Bookmark currentBookmark = box.getAt(index)!;
+                return ListTile(
+                  leading: SizedBox(
+                    width: 60,
+                    height: 60,
+                    child: CachedNetworkImage(
+                      imageUrl: currentBookmark.recipe.attfilenomain!,
+                    ),
+                  ),
+                  title: Text(
+                    currentBookmark.recipe.rcpnm.toString(),
+                  ),
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => ManualScreen(
+                        recipe: currentBookmark.recipe,
+                      ),
+                    ),
+                  ),
+                  trailing: IconButton(
+                    icon: const Icon(
+                      Icons.remove_circle_outline,
+                      color: Colors.black,
+                    ),
+                    onPressed: () {
+                      box.deleteAt(index);
+                    },
+                  ),
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return const Divider();
+              },
+              itemCount: box.length,
+            );
+          }
+          return const Center(
+            child: Text('관심 등록한 레시피가 없습니다.'),
+          );
+        },
       ),
     );
   }

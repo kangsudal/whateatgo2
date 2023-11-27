@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:whateatgo2/model/bookmark.dart';
 import 'package:whateatgo2/riverpod/homeScreenState.dart';
 import 'package:whateatgo2/riverpod/shakeState.dart';
 import 'package:whateatgo2/screen/bookmark_screen.dart';
@@ -245,7 +247,7 @@ class ContentWidget extends StatelessWidget {
   }
 }
 
-class TopWidget extends StatelessWidget {
+class TopWidget extends StatefulWidget {
   const TopWidget({
     super.key,
     required this.currentRecipe,
@@ -254,20 +256,37 @@ class TopWidget extends StatelessWidget {
   final Recipe? currentRecipe;
 
   @override
+  State<TopWidget> createState() => _TopWidgetState();
+}
+
+class _TopWidgetState extends State<TopWidget> {
+  late bool isBookmarked;
+
+  @override
   Widget build(BuildContext context) {
+    Box<Bookmark> box = Hive.box<Bookmark>('bookmarkBox');
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: Image.network(
-            currentRecipe!.attfilenomain!,
+            widget.currentRecipe!.attfilenomain!,
             loadingBuilder: (
               BuildContext context,
               Widget child,
               ImageChunkEvent? loadingProgress,
             ) {
               if (loadingProgress == null) {
+                int index = int.parse(widget.currentRecipe!.rcpseq!);
+                if (box.containsKey(index) == false) {
+                  box.put(
+                    index,
+                    Bookmark(
+                        recipe: widget.currentRecipe!, isBookmarked: false),
+                  );
+                }
+                isBookmarked = box.get(index)!.isBookmarked;
                 return Stack(
                   children: [
                     child,
@@ -277,11 +296,25 @@ class TopWidget extends StatelessWidget {
                       child: CircleAvatar(
                         backgroundColor: Colors.white,
                         child: IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.favorite_outline,
-                            color: Colors.black,
-                          ),
+                          onPressed: () {
+                            setState(() {
+                              box.put(
+                                index,
+                                Bookmark(
+                                    recipe: widget.currentRecipe!,
+                                    isBookmarked: !isBookmarked),
+                              );
+                            });
+                          },
+                          icon: isBookmarked == true
+                              ? const Icon(
+                                  Icons.favorite,
+                                  color: Colors.pinkAccent,
+                                )
+                              : const Icon(
+                                  Icons.favorite_border,
+                                  color: Colors.black,
+                                ),
                         ),
                       ),
                     )
@@ -306,7 +339,7 @@ class TopWidget extends StatelessWidget {
         ),
         const SizedBox(height: 15),
         Text(
-          currentRecipe!.rcpnm!,
+          widget.currentRecipe!.rcpnm!,
           style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                 color: Colors.black,
                 // fontFamily: 'BlackHanSans',

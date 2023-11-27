@@ -6,30 +6,30 @@ part of 'bookmark.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class BookMarkAdapter extends TypeAdapter<BookMark> {
+class BookMarkAdapter extends TypeAdapter<Bookmark> {
   @override
   final int typeId = 3;
 
   @override
-  BookMark read(BinaryReader reader) {
+  Bookmark read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return BookMark(
+    return Bookmark(
       recipe: fields[0] as Recipe,
-      isBookMarked: fields[1] as bool,
+      isBookmarked: fields[1] as bool,
     );
   }
 
   @override
-  void write(BinaryWriter writer, BookMark obj) {
+  void write(BinaryWriter writer, Bookmark obj) {
     writer
       ..writeByte(2)
       ..writeByte(0)
       ..write(obj.recipe)
       ..writeByte(1)
-      ..write(obj.isBookMarked);
+      ..write(obj.isBookmarked);
   }
 
   @override
