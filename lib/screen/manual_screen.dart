@@ -7,6 +7,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:whateatgo2/model/bookmark.dart';
 import 'package:whateatgo2/model/eat_note.dart';
 import 'package:whateatgo2/riverpod/shakeState.dart';
 
@@ -26,6 +27,7 @@ class ManualScreen extends ConsumerStatefulWidget {
 class _ManualScreenState extends ConsumerState<ManualScreen> {
   ScreenshotController screenshotController = ScreenshotController();
   bool isLoading = false;
+  late bool isBookmarked;
 
   @override
   void initState() {
@@ -44,11 +46,39 @@ class _ManualScreenState extends ConsumerState<ManualScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Box<Bookmark> box = Hive.box<Bookmark>('bookmarkBox');
+    int index = int.parse(widget.recipe.rcpseq!);
+    if (box.containsKey(index) == false) {
+      box.put(
+        index,
+        Bookmark(recipe: widget.recipe, isBookmarked: false),
+      );
+    }
+    isBookmarked = box.get(index)!.isBookmarked;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(widget.recipe.rcpnm!),
         actions: [
+          IconButton(
+            onPressed: () {
+              setState(
+                () {
+                  box.put(
+                    index,
+                    Bookmark(
+                      recipe: widget.recipe,
+                      isBookmarked: !isBookmarked,
+                    ),
+                  );
+                },
+              );
+            },
+            icon: isBookmarked == false
+                ? const Icon(Icons.favorite_outline)
+                : const Icon(Icons.favorite),
+            color: isBookmarked == false ? Colors.black : Colors.pinkAccent,
+          ),
           IconButton(
             onPressed: () {
               setState(() {
