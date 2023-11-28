@@ -38,10 +38,16 @@ class _BookMarkScreenState extends ConsumerState<BookMarkScreen> {
       body: ValueListenableBuilder(
         valueListenable: Hive.box<Bookmark>('bookmarkBox').listenable(),
         builder: (BuildContext context, Box<Bookmark> box, Widget? child) {
-          if (box.isNotEmpty) {
+          List trueBookmarkList = [];
+          for (Bookmark item in box.values.toList()) {
+            if (item.isBookmarked == true) {
+              trueBookmarkList.add(item);
+            }
+          }
+          if (trueBookmarkList.isNotEmpty) {
             return ListView.separated(
               itemBuilder: (BuildContext context, int index) {
-                Bookmark currentBookmark = box.getAt(index)!;
+                Bookmark currentBookmark = trueBookmarkList[index];
                 return ListTile(
                   leading: SizedBox(
                     width: 60,
@@ -66,7 +72,9 @@ class _BookMarkScreenState extends ConsumerState<BookMarkScreen> {
                       color: Colors.black,
                     ),
                     onPressed: () {
-                      box.deleteAt(index);
+                      setState(() {
+                        box.delete(int.parse(currentBookmark.recipe.rcpseq!));
+                      });
                     },
                   ),
                 );
@@ -74,7 +82,7 @@ class _BookMarkScreenState extends ConsumerState<BookMarkScreen> {
               separatorBuilder: (BuildContext context, int index) {
                 return const Divider();
               },
-              itemCount: box.length,
+              itemCount: trueBookmarkList.length,
             );
           }
           return const Center(
