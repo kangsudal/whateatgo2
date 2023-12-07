@@ -196,8 +196,14 @@ class BuymeacoffeeWidget extends StatelessWidget {
             ),
           ),
           onTap: () {
-            // Update the state of the app.
-            // ...
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return const AlertDialog(
+                  content: const Text('고맙습니다! 준비중입니다 ㅎㅎ'),
+                );
+              },
+            );
           },
         ),
       ),
