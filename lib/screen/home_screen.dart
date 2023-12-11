@@ -35,7 +35,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: const Color.fromRGBO(255, 255, 255, 0.9),
+        backgroundColor: const Color.fromRGBO(230, 230, 230, 1.0),
         appBar: AppBar(),
         endDrawer: Drawer(
           child: Column(

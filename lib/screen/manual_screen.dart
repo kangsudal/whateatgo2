@@ -56,8 +56,8 @@ class _ManualScreenState extends ConsumerState<ManualScreen> {
     }
     isBookmarked = box.get(index)!.isBookmarked;
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: const Color.fromRGBO(230, 230, 230, 1.0),
         title: Text(widget.recipe.rcpnm!),
         actions: [
           IconButton(
@@ -128,7 +128,7 @@ class _ManualScreenState extends ConsumerState<ManualScreen> {
                         left: 0,
                         right: 0,
                         child: Container(
-                          color: Color.fromRGBO(255, 255, 255, 0.9),
+                          color: const Color.fromRGBO(230, 230, 230, 1.0),
                         ),
                       ),
                       Column(
