@@ -131,6 +131,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ...categories.keys
                   .map(
                     (key) => SwitchListTile.adaptive(
+                      activeColor: Colors.black,
                       title: Text(key),
                       value: categories[key]!,
                       onChanged: (value) {

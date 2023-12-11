@@ -120,6 +120,7 @@ class _ManualScreenState extends ConsumerState<ManualScreen> {
                 Screenshot(
                   controller: screenshotController,
                   child: Stack(
+                    alignment: Alignment.topCenter,
                     children: [
                       Positioned(
                         top: 0,
@@ -127,7 +128,7 @@ class _ManualScreenState extends ConsumerState<ManualScreen> {
                         left: 0,
                         right: 0,
                         child: Container(
-                          color: Colors.white,
+                          color: Color.fromRGBO(255, 255, 255, 0.9),
                         ),
                       ),
                       Column(
