@@ -241,12 +241,19 @@ class ContentWidget extends StatelessWidget {
     } else {
       return Padding(
         padding: const EdgeInsets.all(18.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: TopWidget(currentRecipe: currentRecipe),
+        child: CustomScrollView(
+          slivers: [
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: TopWidget(currentRecipe: currentRecipe),
+                  ),
+                  BottomButtonsWidget(currentRecipe: currentRecipe),
+                ],
+              ),
             ),
-            BottomButtonsWidget(currentRecipe: currentRecipe),
           ],
         ),
       );

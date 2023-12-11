@@ -56,6 +56,7 @@ class _ManualScreenState extends ConsumerState<ManualScreen> {
     }
     isBookmarked = box.get(index)!.isBookmarked;
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(230, 230, 230, 1.0),
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(230, 230, 230, 1.0),
         title: Text(widget.recipe.rcpnm!),
