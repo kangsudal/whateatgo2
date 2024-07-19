@@ -155,7 +155,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           diceNumber: diceNumber,
         ),
         floatingActionButton: FloatingActionButton(
-          // backgroundColor: Colors.black,
+          backgroundColor: Colors.black,
           child: const Icon(Icons.refresh),
           onPressed: () {
             ref.read(diceNumberProvider.notifier).roll();

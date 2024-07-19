@@ -80,3 +80,9 @@ flutter {
 }
 
 dependencies {}
+
+task printTargetSdkVersion {
+    doLast {
+        println("Target SDK Version: ${android.defaultConfig.targetSdkVersion}")
+    }
+}
